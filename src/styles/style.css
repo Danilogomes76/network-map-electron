@@ -1,0 +1,101 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
+
+body {
+  background-color: #282a36;
+  color: #f8f8f2;
+  font-family: "Courier New", Courier, monospace;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h3 {
+  margin: 10px 0px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #44475a;
+  color: #f8f8f2;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #bd93f9;
+  color: #f8f8f2;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #6a50a7;
+  transition: 0.2s ease-in;
+}
+
+select {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #44475a;
+  color: #f8f8f2;
+}
+
+.messageBox {
+  background-color: #44475a;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 400px;
+  margin-top: 2rem;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
+  gap: 7rem;
+}
+
+#mappedPaths {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  gap: 20px;
+}
+.paths {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.paths img {
+  width: 2rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "electronporfavor",
+  "version": "1.0.0",
+  "main": "main.js",
+  "license": "MIT",
+  "dependencies": {
+    "node-ipc": "^11.1.0"
+  },
+  "devDependencies": {
+    "electron": "^24.3.1",
+    "electron-builder": "^23.6.0"
+  },
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "start:dev": "NODE_ENV=development electron . --no-sandbox",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.danilogomes.rec",
+    "win": {
+      "icon": "./assets/icons/icone.png"
+    }
+  }
+}

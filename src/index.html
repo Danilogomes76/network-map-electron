@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapeador de Rede</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <main>
+      <section class="animate__animated animate__fadeInUp animate__slow">
+        <form id="form">
+          <h1>Mapeador de Rede</h1>
+          <h3>Network Ip</h3>
+          <input
+            type="text"
+            value="10.1.113.230"
+            id="inputip"
+            placeholder="Network IP"
+          />
+          <h3>Path to map</h3>
+          <input type="text" id="inputPath" placeholder="Path to map" />
+          <button id="buttonMapNetwork">Map Folder</button>
+
+          <h3>Delete a mapped unit:</h3>
+          <select id="unitSelected">
+            <option value="Z">Z:</option>
+            <option value="Y">Y:</option>
+            <option value="X">X:</option>
+            <option value="W">W:</option>
+            <option value="V">V:</option>
+            <option value="U">U:</option>
+            <option value="T">T:</option>
+            <option value="S">S:</option>
+            <option value="R">R:</option>
+            <option value="Q">Q:</option>
+          </select>
+          <button id="removeUnitButton">Remove Unit</button>
+          <button id="clearCredentialsButton">Clear Credentials</button>
+        </form>
+
+        <section id="messageBox"></section>
+      </section>
+
+      <!-- <section id="mappedPaths">
+        <div class="paths">
+          <img src="../assets/icons/pasta.png" />
+          <p>minhapasta</p>
+        </div>
+        <div class="paths">
+          <img src="../assets/icons/pasta.png" />
+          <p>minhapasta</p>
+        </div>
+        <div class="paths">
+          <img src="../assets/icons/pasta.png" />
+          <p>minhapasta</p>
+        </div>
+      </section> -->
+    </main>
+
+    <script src="./scripts/index.js"></script>
+  </body>
+</html>
