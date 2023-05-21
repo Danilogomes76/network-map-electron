@@ -65,6 +65,10 @@ select {
   margin-top: 2rem;
 }
 
+.msgBox {
+  display: none;
+}
+
 main {
   display: flex;
   align-items: center;
@@ -91,6 +95,12 @@ main {
   width: 2rem;
 }
 
+.formSection {
+  display: flex;
+  align-items: flex-start;
+  gap: 9rem;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -101,7 +111,7 @@ main {
 }
 
 .modal {
-  display: block;
+  display: none;
   position: fixed;
   z-index: 1;
   left: 0;

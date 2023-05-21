@@ -45,7 +45,7 @@ removeUnitButton.addEventListener("click", () => {
     }
   });
 });
-console.log(clearCredentialsButton);
+
 clearCredentialsButton.addEventListener("click", () => {
   ipcRenderer.send("removeCredentials");
 
@@ -60,74 +60,49 @@ clearCredentialsButton.addEventListener("click", () => {
 });
 
 const sucessMapMessage = (unitToAlocation) => {
-  const message = document.createElement("p");
-  message.innerText = "Pasta Mapeada com sucesso!";
-  if (messageBox.children.length > 0) {
-    const p = document.querySelector("p");
-    p.innerText = `Pasta Mapeada com sucesso na unidade ${unitToAlocation}:!`;
-  } else {
-    messageBox.classList.add("messageBox");
-    messageBox.appendChild(message);
-  }
+  messageConstructor(
+    "Pasta Mapeada com sucesso",
+    ` na unidade ${unitToAlocation}`
+  );
 };
 
 const errorMapMessage = () => {
-  const message = document.createElement("p");
-  message.innerText = "Houve um erro ao mapear sua pasta!";
-  if (messageBox.children.length > 0) {
-    const p = document.querySelector("p");
-    p.innerText = "Houve um erro ao mapear sua pasta!";
-  } else {
-    messageBox.classList.add("messageBox");
-    messageBox.appendChild(message);
-  }
+  messageConstructor("Houve um erro ao mapear sua pasta");
 };
 
 const failToRemoveNetwork = () => {
-  const message = document.createElement("p");
-  message.innerText = "Houve um erro ao remover sua pasta!";
-  if (messageBox.children.length > 0) {
-    const p = document.querySelector("p");
-    p.innerText = "Houve um erro ao remover sua pasta!";
-  } else {
-    messageBox.classList.add("messageBox");
-    messageBox.appendChild(message);
-  }
+  messageConstructor("Houve um erro ao remover sua pasta");
 };
 
 const sucessToRemoveNetwork = () => {
-  const message = document.createElement("p");
-  message.innerText = "Pasta removida com sucesso!";
-  if (messageBox.children.length > 0) {
-    const p = document.querySelector("p");
-    p.innerText = "Pasta removida com sucesso!";
-  } else {
-    messageBox.classList.add("messageBox");
-    messageBox.appendChild(message);
-  }
+  messageConstructor("Pasta removida com sucesso");
 };
 
 const failToClearCredentials = () => {
-  const message = document.createElement("p");
-  message.innerText = "Falha ao apagar credenciais!";
-  if (messageBox.children.length > 0) {
-    const p = document.querySelector("p");
-    p.innerText = "Falha ao apagar credenciais!";
-  } else {
-    messageBox.classList.add("messageBox");
-    messageBox.appendChild(message);
-  }
+  messageConstructor("Falha ao apagar credenciais");
 };
 const sucessToClearCredentials = () => {
+  messageConstructor("Credenciais apagadas");
+};
+
+const messageConstructor = (messageTosent, complement = null) => {
+  const messageInText = complement
+    ? `${messageTosent}${complement}!`
+    : `${messageTosent}!`;
+
   const message = document.createElement("p");
-  message.innerText = "Credenciais apagadas!";
-  if (messageBox.children.length > 0) {
-    const p = document.querySelector("p");
-    p.innerText = "Credenciais apagadas!";
-  } else {
-    messageBox.classList.add("messageBox");
-    messageBox.appendChild(message);
+  messageBox.classList.remove("msgBox");
+
+  message.innerText = messageInText;
+
+  if (messageBox.offsetHeight >= 362) {
+    while (messageBox.firstChild) {
+      messageBox.removeChild(messageBox.firstChild);
+    }
   }
+
+  messageBox.classList.add("messageBox");
+  messageBox.appendChild(message);
 };
 
 const createPath = (pathName) => {
