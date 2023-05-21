@@ -28,7 +28,6 @@ const createWindow = () => {
     backgroundColor: "#44475a",
     icon: path.join(__dirname, "assets/icons/icone.png"),
     show: false,
-    titleBarStyle: "hidden",
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
