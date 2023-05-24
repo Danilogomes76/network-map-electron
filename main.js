@@ -68,7 +68,7 @@ const createWindow = () => {
   });
 
   ipcMain.on("mapped_paths", () => {
-    pastasMapeadas();
+    pastasMapeadas(win);
 
     ipcMain.on("teste", (e, value) => {
       win.webContents.send("drivesNetwork", value); // Emitir o evento "drivesNetwork" com as pastas mapeadas

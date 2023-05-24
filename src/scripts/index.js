@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 const inputIP = document.querySelector("#inputip");
 const inputPath = document.querySelector("#inputPath");
-const form = document.querySelector("#form");
+const form = document.querySelectorAll("form");
 const buttonMapNetwork = document.querySelector("#buttonMapNetwork");
 const removeUnitButton = document.querySelector("#removeUnitButton");
 const clearCredentialsButton = document.querySelector(
@@ -9,10 +9,17 @@ const clearCredentialsButton = document.querySelector(
 );
 const messageBox = document.querySelector("#messageBox");
 const mappedPaths = document.querySelector("#mappedPaths");
+const modal = document.querySelector('#modal')
+const closeButton = document.querySelector('#closeButton')
 
-form.addEventListener("submit", (e) => {
+form.forEach(form => form.addEventListener("submit", (e) => {
   e.preventDefault();
-});
+}))
+
+closeButton.addEventListener('click', ()=>{
+  modal.setAttribute('style', 'display: none;');
+})
+
 
 buttonMapNetwork.addEventListener("click", () => {
   const serverid = inputIP.value;
@@ -22,12 +29,21 @@ buttonMapNetwork.addEventListener("click", () => {
   ipcRenderer.once("sucessOrFailMessage", (e, response) => {
     if (response[0] == "fail") {
       errorMapMessage();
-      return;
-    } else {
-      sucessMapMessage(response[1]);
-      // createPath(path)
-      ipcRenderer.send("mapped_paths");
     }
+
+
+    if (response[0] == 'sucess') {
+      sucessMapMessage(response[1]);
+    }
+    ipcRenderer.send("mapped_paths");
+    ipcRenderer.once('showCredentialsPage', () => {
+      modal.setAttribute('style', 'display: block;');
+    })
+    
+    // ipcRenderer.once("pastasmapeadasserra", (event, value)=>{
+    //   console.log(value);
+    // })
+
   });
 });
 

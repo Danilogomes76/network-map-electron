@@ -5,8 +5,9 @@ const cmdCommand = `cmd.exe`;
 
 const mapNetwork = (serverid, path, win) => {
   let fail = false;
+  let showCredentials = false
   let unitToAlocation;
-  const command = `net use * \\\\${serverid}\\${path}`;
+  let command = `net use * \\\\${serverid}\\${path}`;
 
   const cmdProcessMap = exec(cmdCommand, { detached: true });
 
@@ -14,7 +15,7 @@ const mapNetwork = (serverid, path, win) => {
   cmdProcessMap.stdin.end();
 
   cmdProcessMap.stdout.on("data", (data) => {
-    console.log(data.toString());
+    // console.log(data.toString());
     const outPutText = data.toString();
     const regex = /unidade ([A-Z])/i;
     const result = regex.exec(outPutText);
@@ -26,19 +27,24 @@ const mapNetwork = (serverid, path, win) => {
 
   cmdProcessMap.stderr.on("data", (data) => {
     const messageOutPut = data.toString();
-    console.log(messageOutPut);
+    
     if (messageOutPut.includes("Erro de sistema 67")) {
       fail = true;
+    }
+    if (messageOutPut.includes('Erro de sistema 1223.')) {
+      showCredentials = true
+
     }
   });
 
   cmdProcessMap.on("close", (code) => {
     if (!fail) {
       win.webContents.send("sucessOrFailMessage", ["success", unitToAlocation]);
-    } else {
+      win.webContents.send('showCredentialsPage')
+      return
+    }
       console.log(`Código de saída do processo: ${code}`);
       win.webContents.send("sucessOrFailMessage", ["fail"]);
-    }
   });
 };
 
@@ -102,7 +108,37 @@ const removeNetwork = (optionToRemove, win) => {
   });
 };
 
-const pastasMapeadas = () => {
+// const pastasMapeadas = (win) => {
+//   const cmdCommand = `cmd.exe`;
+//   const command = `net use`;
+
+//   const cmdProcessMap = exec(cmdCommand, { detached: true });
+
+//   let output = "";
+
+//   cmdProcessMap.stdin.write(`${command}\r\n`);
+//   cmdProcessMap.stdin.end();
+
+//   cmdProcessMap.stdout.on("data", (data) => {
+//     output += data.toString();
+//   });
+
+//   cmdProcessMap.on("close", (code) => {
+//     const regex = /\\\\[^\\]+\\([^\s]+)/;
+//     if (code === 0) {
+//       const mappedDrives = output
+//         .split("\r\n")
+//         .map((line) => line.trim())
+//         .filter((line) => line.startsWith("OK"))
+//         .map((line) => line.match(regex)[1]);
+//       // ipcMain.emit("drivesNetwork", mappedDrives);
+//       win.webContents.send('pastasmapeadasserra', mappedDrives)
+//     } else {
+//       console.error("Erro ao executar o comando 'net use'");
+//     }
+//   });
+// };
+const pastasMapeadas = (win) => {
   const cmdCommand = `cmd.exe`;
   const command = `net use`;
 
@@ -125,7 +161,8 @@ const pastasMapeadas = () => {
         .map((line) => line.trim())
         .filter((line) => line.startsWith("OK"))
         .map((line) => line.match(regex)[1]);
-      ipcMain.emit("drivesNetwork", mappedDrives);
+      // ipcMain.emit("drivesNetwork", mappedDrives);
+      win.webContents.send('pastasmapeadasserra', mappedDrives)
     } else {
       console.error("Erro ao executar o comando 'net use'");
     }

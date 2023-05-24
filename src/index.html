@@ -26,7 +26,7 @@
             placeholder="Network IP"
           />
           <h3>Path to map</h3>
-          <input type="text" id="inputPath" placeholder="Path to map" />
+          <input type="text" value="stic" id="inputPath" placeholder="Path to map" />
           <button id="buttonMapNetwork">Map Folder</button>
 
           <h3>Delete a mapped unit:</h3>
@@ -51,8 +51,8 @@
 
       <section id="modal" class="modal">
         <div class="modal-content">
-          <span class="close">&times;</span>
-          <form>
+          <span class="close" id="closeButton">&times;</span>
+          <form id="credentialsForm">
             <h2>A rede requer autenticação</h2>
             <p>Para mapear a rede, insira seu nome de usuário e senha.</p>
             <label for="username">User</label>
