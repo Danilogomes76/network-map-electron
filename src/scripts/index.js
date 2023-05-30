@@ -11,12 +11,15 @@ const messageBox = document.querySelector("#messageBox");
 const mappedPaths = document.querySelector("#mappedPaths");
 const modal = document.querySelector('#modal')
 const closeButton = document.querySelector('#closeButton')
+const credentialsUsername = document.querySelector('#username')
+const credentialsPassword = document.querySelector('#password')
+const credentialsForm = document.querySelector('#credentialsForm')
 
 form.forEach(form => form.addEventListener("submit", (e) => {
   e.preventDefault();
 }))
 
-closeButton.addEventListener('click', ()=>{
+closeButton.addEventListener('click', () => {
   modal.setAttribute('style', 'display: none;');
 })
 
@@ -36,10 +39,16 @@ buttonMapNetwork.addEventListener("click", () => {
       sucessMapMessage(response[1]);
     }
     ipcRenderer.send("mapped_paths");
+
     ipcRenderer.once('showCredentialsPage', () => {
       modal.setAttribute('style', 'display: block;');
+
+      credentialsForm.addEventListener('submit', () => {
+        ipcRenderer.send('credentials', [credentialsUsername.value, credentialsPassword.value])
+      })
+
     })
-    
+
     // ipcRenderer.once("pastasmapeadasserra", (event, value)=>{
     //   console.log(value);
     // })

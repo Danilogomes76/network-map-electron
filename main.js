@@ -56,6 +56,12 @@ const createWindow = () => {
     const serverid = value[0];
     const path = value[1];
     mapNetwork(serverid, path, win);
+
+    ipcMain.on('credentials', (e, value) => {
+      const username = value[0]
+      const password = value[1]
+      mapNetwork(serverid, path, win, username, password);
+    })
   });
 
   ipcMain.on("remove_network", (e, value) => {
@@ -74,6 +80,8 @@ const createWindow = () => {
       win.webContents.send("drivesNetwork", value); // Emitir o evento "drivesNetwork" com as pastas mapeadas
     });
   });
+
+
 };
 
 //Cria a janela

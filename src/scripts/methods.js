@@ -3,7 +3,7 @@ const { ipcMain } = require("electron");
 
 const cmdCommand = `cmd.exe`;
 
-const mapNetwork = (serverid, path, win) => {
+const mapNetwork = (serverid, path, win, username, password) => {
   let fail = false;
   let showCredentials = false
   let unitToAlocation;
@@ -23,28 +23,39 @@ const mapNetwork = (serverid, path, win) => {
     if (result && result.length > 1) {
       unitToAlocation = result.slice(1);
     }
+
+    console.log(outPutText); // AQUI GERA O ERRO QUE PRECISSO TRABALHAR EM CIMA, PEDE A SENHA AQUI
+
+    if (outPutText.includes('Digite o nome')) {
+      console.log('entrou');
+      mapNetworkWithCredentials(serverid, path, win, username, password)
+    }
+
+    ///////////////////////////////////
   });
 
   cmdProcessMap.stderr.on("data", (data) => {
     const messageOutPut = data.toString();
-    
+
     if (messageOutPut.includes("Erro de sistema 67")) {
       fail = true;
     }
     if (messageOutPut.includes('Erro de sistema 1223.')) {
       showCredentials = true
-
     }
   });
 
   cmdProcessMap.on("close", (code) => {
-    if (!fail) {
-      win.webContents.send("sucessOrFailMessage", ["success", unitToAlocation]);
-      win.webContents.send('showCredentialsPage')
-      return
-    }
+
+
+    if (fail) {
       console.log(`Código de saída do processo: ${code}`);
       win.webContents.send("sucessOrFailMessage", ["fail"]);
+      return
+    }
+    win.webContents.send("sucessOrFailMessage", ["success", unitToAlocation]);
+    win.webContents.send('showCredentialsPage')
+
   });
 };
 
@@ -166,6 +177,56 @@ const pastasMapeadas = (win) => {
     } else {
       console.error("Erro ao executar o comando 'net use'");
     }
+  });
+};
+
+const mapNetworkWithCredentials = (serverid, path, win, username, password) => {
+  let fail = false;
+  let showCredentials = false
+  let unitToAlocation;
+  let command = `net use * \\\\${serverid}\\${path} /user:${username} ${password}`;
+
+  const cmdProcessMap = exec(cmdCommand, { detached: true });
+
+  cmdProcessMap.stdin.write(`${command}\r\n`);
+  cmdProcessMap.stdin.end();
+
+  cmdProcessMap.stdout.on("data", (data) => {
+    // console.log(data.toString());
+    const outPutText = data.toString();
+    const regex = /unidade ([A-Z])/i;
+    const result = regex.exec(outPutText);
+
+    if (result && result.length > 1) {
+      unitToAlocation = result.slice(1);
+    }
+
+    console.log(outPutText); // AQUI GERA O ERRO QUE PRECISSO TRABALHAR EM CIMA, PEDE A SENHA AQUI
+
+    if (outPutText.includes('Digite o nome')) {
+      console.log('entrou');
+    }
+  });
+
+  cmdProcessMap.stderr.on("data", (data) => {
+    const messageOutPut = data.toString();
+
+    if (messageOutPut.includes("Erro de sistema 67")) {
+      fail = true;
+    }
+  });
+
+  cmdProcessMap.on("close", (code) => {
+
+
+    if (fail) {
+      console.log(`Código de saída do processo: ${code}`);
+      win.webContents.send("sucessOrFailMessage", ["fail"]);
+      return
+    }
+    win.webContents.send("sucessOrFailMessage", ["success", unitToAlocation]);
+
+
   });
 };
 
